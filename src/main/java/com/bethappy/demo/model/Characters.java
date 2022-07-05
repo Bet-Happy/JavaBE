@@ -22,8 +22,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="CHARACTER")
-public class Character {
+@Table(name="CHARACTERS")
+public class Characters {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -31,7 +31,7 @@ public class Character {
   private Integer mining;
   
 
-  public Character(String name){
+  public Characters(String name){
     this.name = name;
     this.mining = Integer.valueOf(0);
   }

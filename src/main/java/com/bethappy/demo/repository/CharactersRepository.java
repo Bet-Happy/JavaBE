@@ -1,11 +1,11 @@
 package com.bethappy.demo.repository;
 
-import com.bethappy.demo.model.Character;
+import com.bethappy.demo.model.Characters;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface CharacterRepository extends CrudRepository<Character, Long>{
+public interface CharactersRepository extends CrudRepository<Characters, Long>{
     
 }

@@ -17,10 +17,10 @@ import java.security.Principal;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class CharacterController {
+public class CharactersController {
   
   @Autowired
-  CharacterRepository characterRepository;
+  CharactersRepository characterRepository;
 
   @GetMapping("/")
   public String main(Model model){
