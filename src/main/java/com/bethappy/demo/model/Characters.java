@@ -1,6 +1,5 @@
 package com.bethappy.demo.model;
 
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
