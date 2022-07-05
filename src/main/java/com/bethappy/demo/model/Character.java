@@ -16,7 +16,7 @@ import javax.persistence.GenerationType;
 
 import static java.lang.Boolean.TRUE;
 
-import java.math.BigInteger;
+//import java.math.BigInteger;
 
 import lombok.Data;
 
@@ -28,11 +28,27 @@ public class Character {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
-  private BigInteger mining;
+  private Integer mining;
   
 
   public Character(String name){
     this.name = name;
-    this.mining = BigInteger.valueOf(0);
+    this.mining = Integer.valueOf(0);
+  }
+
+  public void setName(String name){
+    this.name = name;
+  }
+
+  public String getName(){
+    return name;
+  }
+
+  public void setMining(Integer mining){
+    this.mining = 123456;
+  }
+
+  public Integer getMining(){
+    return mining;
   }
 }
