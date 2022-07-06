@@ -61,6 +61,18 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
+		<!-- ADDED 06/07/2022 -->
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+			<exclusions>
+					<exclusion>
+							<groupId>org.hamcrest</groupId>
+							<artifactId>hamcrest-core</artifactId>
+					</exclusion>
+			</exclusions>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -77,7 +89,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!-- classpath:db/migration -->
 		</plugins>
 	</build>
 

@@ -11,19 +11,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.GenerationType;
-//import org.apache.commons.validator.routines.EmailValidator;
-
-
-import static java.lang.Boolean.TRUE;
-
-//import java.math.BigInteger;
-
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name="CHARACTERS")
 public class Characters {
+  //might want to add timestamp to mark character creation time
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
