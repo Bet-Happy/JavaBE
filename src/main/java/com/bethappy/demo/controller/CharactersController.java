@@ -7,28 +7,21 @@ import com.bethappy.demo.model.*;
 import com.bethappy.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 // NOT NECESSARY FOR NOW
 import org.springframework.web.servlet.view.RedirectView;
 import java.security.Principal;
-import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller
+@RestController
 public class CharactersController {
   
   @Autowired
   CharactersRepository characterRepository;
 
-  @GetMapping("/")
-  public String main(Model model){
-    return "/";
+  @GetMapping("/characters")
+  public RedirectView getCharacters(){
+    return new RedirectView("/hello");
   }
 
-  // @PostMapping("/")
-  // public RedirectView CREATIONPLACEHOLDER(@ModelAttribute Characters character, Model model) {
-
-  // }
 }
