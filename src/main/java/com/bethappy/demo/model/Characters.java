@@ -2,6 +2,7 @@ package com.bethappy.demo.model;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -19,17 +20,22 @@ import static java.lang.Boolean.TRUE;
 //import java.math.BigInteger;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name="CHARACTERS")
+@NoArgsConstructor
 public class Characters {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long id;
   private String name;
   private Integer mining;
-  
+
+  @OneToMany(mappedBy="characters")
+  private List<Inventory> inventoryList;
 
   public Characters(String name){
     this.name = name;
