@@ -2,7 +2,7 @@ package com.bethappy.demo.model;
 
 import lombok.Data;
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -11,14 +11,13 @@ public class Characters {
   //might want to add timestamp to mark character creation time
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   private Long id;
   private String name;
-  @Column(columnDefinition = "Integer default 0")
   private Integer mining = 0;
 
   @OneToMany(mappedBy="characters")
-  private List<Inventory> inventoryList;
+  private Set<Inventory> inventoryList;
+
   public Characters(){
     // you set the default value here as well...
     this.mining = 0;

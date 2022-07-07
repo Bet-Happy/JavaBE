@@ -55,6 +55,7 @@ public class CharactersControllerTest {
     assertThat(post.getBody().contains("\"id\":1"));
     assertThat(post.getBody().contains("\"name\":\"TestCharacter\""));
     assertThat(post.getBody().contains("\"mining\":0"));
+    System.out.println(post.getBody());
     assertThat(Long.valueOf(1)).isEqualTo(charactersRepository.findAll().get(0).getId());
     assertThat("TestCharacter").isEqualTo(charactersRepository.findAll().get(0).getName());
     assertThat((Integer)0).isEqualTo(charactersRepository.findAll().get(0).getMining());

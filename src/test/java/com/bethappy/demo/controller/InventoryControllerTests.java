@@ -1,12 +1,10 @@
 package com.bethappy.demo.controller;
 
-import com.bethappy.demo.model.Characters;
-import com.bethappy.demo.repository.CharactersRepository;
 import com.bethappy.demo.repository.InventoryRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,25 +35,13 @@ public class InventoryControllerTests {
     @LocalServerPort
     int randomServerPort;
 
-//    @BeforeAll
-//    public void createCharacter() throws URISyntaxException {
-//        URI uri = new URI("http://localhost:"+randomServerPort+"/character");
-//        //create headers
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Type","application/json");
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("name", "TestUser1");
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        }
-//        //httpEntity
-//        HttpEntity<String> request = new HttpEntity<>(jsonObject.toString());
-//        this.restTemplate.postForEntity(uri,request,String.class);
-//    }
+    public void EmptyInventoryTable(){
+        inventoryRepository.deleteAll();
+    }
 
     @Test
     public void getAllInventoryDetails() throws URISyntaxException {
+        EmptyInventoryTable();
         URI uri = new URI("http://localhost:"+randomServerPort+"/inventory");
         //create headers
         HttpHeaders headers = new HttpHeaders();
@@ -67,6 +53,7 @@ public class InventoryControllerTests {
     }
     @Test
     public void addAItemToInventory ()throws URISyntaxException {
+        EmptyInventoryTable();
         URI uri = new URI("http://localhost:"+randomServerPort+"/inventory");
         //create headers
         HttpHeaders headers = new HttpHeaders();
@@ -84,6 +71,7 @@ public class InventoryControllerTests {
         ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).contains("\"message\":\"Item added to the inventory\"");
-        assertThat(response.getBody()).contains("{\"data\":{\"id\":1,\"characters\":{\"id\":5,\"name\":\"1\",\"mining\":0,\"inventoryList\":null},\"slot_number\":1,\"amount\":2}");
+        assertThat(response.getBody()).contains("{\"data\":{\"id\":1,\"characters\":{");
+        assertThat(response.getBody()).contains("\"mining\":0},\"slot_number\":1,\"amount\":2}");
     }
 }
