@@ -12,9 +12,14 @@ import javax.persistence.Table;
 public class Resource {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String name;
   private Integer xp;
   private Integer tpa;
+  
+  public Resource(){
+    
+  }
 
   public Resource(String name, Integer xp, Integer tpa){
     this.name = name;
