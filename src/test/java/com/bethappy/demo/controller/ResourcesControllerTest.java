@@ -53,4 +53,19 @@ public class ResourcesControllerTest {
     assertTrue(get.getStatusCodeValue() == 200);
 
   }
+
+  @Test
+  public void TestGetSingleResource() throws Exception {
+    URI uri = new URI("http://localhost:"+randomServerPort+"/resources/Copper");
+    ResponseEntity<String> get = restTemplate.getForEntity(uri, String.class);
+    assertThat(get.getBody().contains("\"name\":\"Copper\""));
+  }
+
+  @Test
+  public void TestSingleResourcesStatus() throws Exception {
+    URI uri = new URI("http://localhost:"+randomServerPort+"/resources/Copper");
+    ResponseEntity<String> get = restTemplate.getForEntity(uri, String.class);
+    assertTrue(get.getStatusCodeValue() == 200);
+
+  }
 }
