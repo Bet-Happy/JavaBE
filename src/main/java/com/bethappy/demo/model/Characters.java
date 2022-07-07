@@ -25,6 +25,11 @@ public class Characters {
   private Integer mining;
   
 
+  public Characters(){
+    // you set the default value here as well...
+    this.mining = Integer.valueOf(0);
+  }
+
   public Characters(String name){
     this.name = name;
     this.mining = Integer.valueOf(0);
@@ -39,7 +44,7 @@ public class Characters {
   }
 
   public void setMining(Integer mining){
-    this.mining = 123456;
+    this.mining = mining;
   }
 
   public Integer getMining(){
