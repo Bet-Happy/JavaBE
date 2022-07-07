@@ -32,19 +32,27 @@ public class InventoryControllerTests {
     @Autowired
     InventoryRepository inventoryRepository;
     @Autowired
-    static
-    CharactersRepository characterRepository;
-    @Autowired
     private TestRestTemplate restTemplate;
 
     @LocalServerPort
     int randomServerPort;
 
-    @BeforeAll
-    static void createCharacter(){
-        Characters testUser1 = new Characters("TestUser1");
-        characterRepository.save (testUser1);
-    }
+//    @BeforeAll
+//    public void createCharacter() throws URISyntaxException {
+//        URI uri = new URI("http://localhost:"+randomServerPort+"/character");
+//        //create headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Type","application/json");
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("name", "TestUser1");
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        //httpEntity
+//        HttpEntity<String> request = new HttpEntity<>(jsonObject.toString());
+//        this.restTemplate.postForEntity(uri,request,String.class);
+//    }
 
     @Test
     public void getAllInventoryDetails() throws URISyntaxException {
@@ -65,17 +73,17 @@ public class InventoryControllerTests {
         headers.add("Content-Type","application/json");
         JSONObject personJsonObject = new JSONObject();
         try {
-            personJsonObject.put("character", "1");
+            personJsonObject.put("characters", "1");
             personJsonObject.put("slot_number", "1");
             personJsonObject.put("amount", "2");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         //httpEntity
-        HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString());
+        HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString(),headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("\"message\":\"InventoryList retrieved\"");
-        assertThat(response.getBody()).contains("\"data\":[]");
+        assertThat(response.getBody()).contains("\"message\":\"Item added to the inventory\"");
+        assertThat(response.getBody()).contains("{\"data\":{\"id\":1,\"characters\":{\"id\":5,\"name\":\"1\",\"mining\":0,\"inventoryList\":null},\"slot_number\":1,\"amount\":2}");
     }
 }
