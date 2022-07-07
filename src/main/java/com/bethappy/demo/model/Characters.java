@@ -1,15 +1,12 @@
 package com.bethappy.demo.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name="CHARACTERS")
-@NoArgsConstructor
 public class Characters {
   //might want to add timestamp to mark character creation time
   @Id
@@ -22,15 +19,21 @@ public class Characters {
 
   @OneToMany(mappedBy="characters")
   private List<Inventory> inventoryList;
+  public Characters(){
+    // you set the default value here as well...
+    this.mining = 0;
+  }
 
   public Characters(String name){
     this.name = name;
+    this.mining = 0;
   }
-
   public String getName(){
     return name;
   }
-
+  public void setMining(Integer mining){
+    this.mining = mining;
+  }
   public Integer getMining(){
     return mining;
   }
