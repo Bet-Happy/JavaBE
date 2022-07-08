@@ -26,8 +26,4 @@ public class InventoryController {
         Inventory item = inventoryRepository.save(inventory);
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the inventory",item);
     }
-
-
-
-
 }

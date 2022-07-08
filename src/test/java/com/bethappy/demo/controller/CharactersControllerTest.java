@@ -2,6 +2,8 @@ package com.bethappy.demo.controller;
 
 import com.bethappy.demo.model.Characters;
 import com.bethappy.demo.repository.CharactersRepository;
+
+import org.apache.catalina.mapper.Mapper;
 import org.junit.Test;
 //
 import org.junit.jupiter.api.BeforeAll;
@@ -16,7 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,7 +31,11 @@ import java.net.URISyntaxException;
 import  static org.hamcrest.CoreMatchers.containsString;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.web.server.LocalServerPort;
+//
 import org.mockito.Mock;
+import java.net.HttpURLConnection;
+import javax.net.ssl.HttpsURLConnection;
+//
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -49,7 +57,7 @@ public class CharactersControllerTest {
   }
   
   @Test
-  public void TestCreateCharacter() throws Exception{
+  public void testCreateCharacter() throws Exception{
     URI uri = new URI("http://localhost:"+randomServerPort+"/character");
     ResponseEntity<String> post = restTemplate.postForEntity(uri, testCharacter, String.class);
     assertThat(post.getBody().contains("\"id\":1"));
@@ -62,7 +70,7 @@ public class CharactersControllerTest {
   }
   
   @Test
-  public void TestGetCharactersDetails() throws URISyntaxException {
+  public void testGetCharactersDetails() throws URISyntaxException {
     charactersRepository.save(testCharacter);
     URI uri = new URI("http://localhost:"+randomServerPort+"/character");
     ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
@@ -72,5 +80,24 @@ public class CharactersControllerTest {
     // Example of a json body
     //"{"data":{"id":1,"name":"TestCharacter","mining":0},"message":"The character is returned","timestamp":"2022-07-06T14:34:12.712+00:00","status":200,"isSuccess":true}"
     }
+
+  @Test
+  public void testUpdateExperience() throws URISyntaxException {
+    URI uri = new URI("http://localhost:"+randomServerPort+"/character/updateExperience");
+
+
+
+    HttpHeaders reqHeaders = new HttpHeaders();
+    reqHeaders.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> requestEntity = new HttpEntity<String>("{\"id\": 1,\"mining\":100}", reqHeaders);
+    ResponseEntity<String> patch = restTemplate.exchange(uri, HttpMethod.PATCH, requestEntity, String.class); 
+
+
+
+    //testCharacter = restTemplate.patchForObject(uri, post, String.class);
+    assertThat(patch.getBody().toString()).contains("\"mining\":100");
+    // assertThat(response.getBody().toString()).contains("\"name\":\"TestCharacter\"");
+    // assertThat(response.getBody().toString()).contains("\"mining\":0");
+  }
 }
 

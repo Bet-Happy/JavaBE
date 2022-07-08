@@ -2,6 +2,8 @@ package com.bethappy.demo.model;
 
 import lombok.Data;
 import javax.persistence.*;
+
+import java.io.Serial;
 import java.util.Set;
 
 @Data
@@ -12,7 +14,9 @@ public class Characters {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
+
   private Integer mining = 0;
 
   @OneToMany(mappedBy="characters")
