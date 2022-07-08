@@ -4,6 +4,8 @@ import com.bethappy.demo.model.Characters;
 import com.bethappy.demo.repository.CharactersRepository;
 
 import org.apache.catalina.mapper.Mapper;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 //
 import org.junit.jupiter.api.BeforeAll;
@@ -35,6 +37,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.mockito.Mock;
 import java.net.HttpURLConnection;
 import javax.net.ssl.HttpsURLConnection;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 //
 
 @ActiveProfiles("test")
@@ -48,9 +51,15 @@ public class CharactersControllerTest {
    @Autowired
    private TestRestTemplate restTemplate;
 
+   
    @LocalServerPort
    int randomServerPort;
 
+   @Before
+   public void setup() {
+       restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+   }
+   
   @BeforeAll
   public void addCharacter() {
     // Integrate this later on
@@ -81,6 +90,7 @@ public class CharactersControllerTest {
     //"{"data":{"id":1,"name":"TestCharacter","mining":0},"message":"The character is returned","timestamp":"2022-07-06T14:34:12.712+00:00","status":200,"isSuccess":true}"
     }
 
+  //@Ignore
   @Test
   public void testUpdateExperience() throws URISyntaxException {
     URI uri = new URI("http://localhost:"+randomServerPort+"/character/updateExperience");
