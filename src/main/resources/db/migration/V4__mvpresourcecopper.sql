@@ -1,2 +1,2 @@
 INSERT INTO resources(name, xp, tpa)
-VALUES ('Copper', 1, 1);
+VALUES ('Copper', 5, 5);
