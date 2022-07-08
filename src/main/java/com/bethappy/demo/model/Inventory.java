@@ -1,5 +1,6 @@
 package com.bethappy.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +18,9 @@ public class Inventory {
     @Column(name="id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "characters_id",nullable = false)
+    @JsonBackReference("characters_inventories")
     private Characters characters;
 
     @Column(name="slot_number")
@@ -27,8 +29,8 @@ public class Inventory {
     @Column(name="amount")
     private Integer amount;
 
-    public Inventory(Characters characters,Integer slot_number, Integer amount){
-        this.characters = characters;
+    public Inventory(Characters characters, Integer slot_number, Integer amount){
+        this.characters= characters;
         this.slot_number= slot_number;
         this.amount= amount;
     }

@@ -1,5 +1,7 @@
 package com.bethappy.demo.controller;
 
+import com.bethappy.demo.model.Characters;
+import com.bethappy.demo.repository.CharactersRepository;
 import com.bethappy.demo.repository.InventoryRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,18 +32,28 @@ public class InventoryControllerTests {
     @Autowired
     InventoryRepository inventoryRepository;
     @Autowired
+    CharactersRepository charactersRepository;
+    @Autowired
     private TestRestTemplate restTemplate;
 
     @LocalServerPort
     int randomServerPort;
 
-    public void EmptyInventoryTable(){
+    public void emptyInventoryTable(){
         inventoryRepository.deleteAll();
     }
+    public void emptyCharacterTable(){
+        charactersRepository.deleteAll();
+    }
+    public void addACharacter(){
+        Characters newChar = new Characters(Long.valueOf("1"),"TestUser");
+        charactersRepository.save(newChar);
+    }
+
 
     @Test
     public void getAllInventoryDetails() throws URISyntaxException {
-        EmptyInventoryTable();
+        emptyInventoryTable();
         URI uri = new URI("http://localhost:"+randomServerPort+"/inventory");
         //create headers
         HttpHeaders headers = new HttpHeaders();
@@ -52,15 +64,39 @@ public class InventoryControllerTests {
         assertThat(response.getBody()).contains("\"data\":[]");
     }
     @Test
-    public void addAItemToInventory ()throws URISyntaxException {
-        EmptyInventoryTable();
+    public void addAItemToAnInvalidCharacter ()throws URISyntaxException {
+        emptyInventoryTable();
+        emptyCharacterTable();
         URI uri = new URI("http://localhost:"+randomServerPort+"/inventory");
         //create headers
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","application/json");
         JSONObject personJsonObject = new JSONObject();
         try {
-            personJsonObject.put("characters", "1");
+            personJsonObject.put("id", "1");
+            personJsonObject.put("slot_number", "1");
+            personJsonObject.put("amount", "2");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        //httpEntity
+        HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString(),headers);
+        ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(response.getBody()).contains("\"message\":\"Character does not exist\"");
+        assertThat(response.getBody()).contains("\"data\":null");
+    }@Test
+    public void addAItemToAValidCharacter ()throws URISyntaxException {
+        emptyInventoryTable();
+        emptyCharacterTable();
+        addACharacter();
+        URI uri = new URI("http://localhost:"+randomServerPort+"/inventory");
+        //create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type","application/json");
+        JSONObject personJsonObject = new JSONObject();
+        try {
+            personJsonObject.put("id", "1");
             personJsonObject.put("slot_number", "1");
             personJsonObject.put("amount", "2");
         } catch (JSONException e) {
@@ -70,8 +106,7 @@ public class InventoryControllerTests {
         HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString(),headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("\"message\":\"Item added to the inventory\"");
-        assertThat(response.getBody()).contains("{\"data\":{\"id\":1,\"characters\":{");
-        assertThat(response.getBody()).contains("\"mining\":0},\"slot_number\":1,\"amount\":2}");
+        assertThat(response.getBody()).contains("\"message\":\"Item added to the character\"");
+        assertThat(response.getBody()).contains("{\"data\":{\"id\":1,\"slot_number\":1,\"amount\":2}");
     }
 }
