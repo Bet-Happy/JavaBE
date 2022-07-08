@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 public class ResponseHandler {
 
     public static ResponseEntity<Object> generateResponse(HttpStatus status, boolean isSuccess, String message,
-            Object responseObj) {
+                                                          Object responseObj) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             map.put("timestamp", new Date());
@@ -18,7 +18,7 @@ public class ResponseHandler {
             map.put("isSuccess", isSuccess);
             map.put("message", message);
             map.put("data", responseObj);
-            //pass another map (map in a map) as a responsobject for the xp? (mining:1111, smithing:2222)
+            //pass another map (map in a map) as a response object for the xp? (mining:1111, smithing:2222)
             return new ResponseEntity<Object>(map, status);
         } catch (Exception e) {
             map.clear();

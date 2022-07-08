@@ -10,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface CharactersRepository extends CrudRepository<Characters, Long>{
     @Override
     List<Characters> findAll();
+    Optional<Characters> findById(Long id);
 }
