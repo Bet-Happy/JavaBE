@@ -2,7 +2,6 @@ package com.bethappy.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "Inventory")
-@NoArgsConstructor
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,15 +21,25 @@ public class Inventory {
     @JsonBackReference("characters_inventories")
     private Characters characters;
 
+    @ManyToOne
+    @JoinColumn(name = "resource_id",nullable = false)
+    @JsonBackReference("resource_inventories")
+    private Resource resource;
+
     @Column(name="slot_number")
     private Integer slot_number;
 
     @Column(name="amount")
     private Integer amount;
 
-    public Inventory(Characters characters, Integer slot_number, Integer amount){
+    public Inventory() {
+    }
+
+    public Inventory(Characters characters, Resource resource, Integer slot_number, Integer amount){
         this.characters= characters;
+        this.resource = resource;
         this.slot_number= slot_number;
         this.amount= amount;
     }
+
 }

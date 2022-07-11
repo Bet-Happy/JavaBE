@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS resources;
+DROP TABLE IF EXISTS resource;
 
-CREATE TABLE resources(
+CREATE TABLE resource(
     id serial PRIMARY KEY,
     name text NOT NULL,
     xp integer NOT NULL,

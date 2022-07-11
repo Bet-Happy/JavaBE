@@ -43,6 +43,7 @@ import org.springframework.http.ResponseEntity;
   // DO THIS WITH THE ID
   public ResponseEntity<?> updateExperience(@RequestBody JSONObject skillExperience){
     Object[] keys = skillExperience.keySet().toArray();
+//      Integer skill = (Integer) skillExperience.get("mining");
     Object[] values = skillExperience.values().toArray();
     Long characterID = Integer.valueOf(values[0].toString()).longValue();
     Optional<Characters> character = charactersRepository.findById(characterID);

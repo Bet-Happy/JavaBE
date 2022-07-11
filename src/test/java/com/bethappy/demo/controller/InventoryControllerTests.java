@@ -46,7 +46,7 @@ public class InventoryControllerTests {
         charactersRepository.deleteAll();
     }
     public void addACharacter(){
-        Characters newChar = new Characters(Long.valueOf("1"),"TestUser");
+        Characters newChar = new Characters(Long.valueOf("1"),"TestUser1");
         charactersRepository.save(newChar);
     }
 
@@ -71,16 +71,24 @@ public class InventoryControllerTests {
         //create headers
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","application/json");
-        JSONObject personJsonObject = new JSONObject();
+        JSONObject inventoryJsonObject = new JSONObject();
+        JSONObject charJsonObject = new JSONObject();
+        Characters newChar = new Characters(Long.valueOf("1"),"TestUser1");
         try {
-            personJsonObject.put("id", "1");
-            personJsonObject.put("slot_number", "1");
-            personJsonObject.put("amount", "2");
+            charJsonObject.put("id",newChar.getId());
+            charJsonObject.put("name",newChar.getName());
+            charJsonObject.put("mining",newChar.getMining());
+            charJsonObject.put("inventories",newChar.getInventories());
+
+            inventoryJsonObject.put("id", "1");
+            inventoryJsonObject.put("characters", charJsonObject);
+            inventoryJsonObject.put("slot_number", "1");
+            inventoryJsonObject.put("amount", "2");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         //httpEntity
-        HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString(),headers);
+        HttpEntity<String> request = new HttpEntity<>(inventoryJsonObject.toString(),headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).contains("\"message\":\"Character does not exist\"");
@@ -94,16 +102,24 @@ public class InventoryControllerTests {
         //create headers
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","application/json");
-        JSONObject personJsonObject = new JSONObject();
+        JSONObject inventoryJsonObject = new JSONObject();
+        JSONObject charJsonObject = new JSONObject();
+        Characters newChar = new Characters(Long.valueOf("1"),"TestUser1");
         try {
-            personJsonObject.put("id", "1");
-            personJsonObject.put("slot_number", "1");
-            personJsonObject.put("amount", "2");
+            charJsonObject.put("id",newChar.getId());
+            charJsonObject.put("name",newChar.getName());
+            charJsonObject.put("mining",newChar.getMining());
+            charJsonObject.put("inventories",newChar.getInventories());
+
+            inventoryJsonObject.put("id", "1");
+            inventoryJsonObject.put("characters", charJsonObject);
+            inventoryJsonObject.put("slot_number", "1");
+            inventoryJsonObject.put("amount", "2");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         //httpEntity
-        HttpEntity<String> request = new HttpEntity<>(personJsonObject.toString(),headers);
+        HttpEntity<String> request = new HttpEntity<>(inventoryJsonObject.toString(),headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(uri,request,String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).contains("\"message\":\"Item added to the character\"");

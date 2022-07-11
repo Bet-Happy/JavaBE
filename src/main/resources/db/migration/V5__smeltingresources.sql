@@ -1,4 +1,4 @@
-INSERT INTO resources(name, xp, tpa)
+INSERT INTO resource(name, xp, tpa)
 VALUES 
     ('Tin', 5, 5), 
     ('Bronze', 8, 7), 
