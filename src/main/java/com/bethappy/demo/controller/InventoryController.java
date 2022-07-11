@@ -53,5 +53,4 @@ public class InventoryController {
 //        justItem.put("amount",item.getAmount());
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
-
 }

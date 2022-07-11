@@ -3,6 +3,8 @@ package com.bethappy.demo.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import javax.persistence.*;
+
+import java.io.Serial;
 import java.util.Set;
 
 @Data
@@ -13,7 +15,9 @@ public class Characters {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
+
   private Integer mining = 0;
 
   //****one character can have many items(named as inventory)
