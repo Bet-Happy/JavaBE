@@ -16,7 +16,8 @@ public class ItemsHandler {
 
   public static void createItem(Characters character, Resource resource){
     Long character_id = character.getId();
-    Inventory inventory = inventoryRepository.findByCharacters_Id(character_id).orElse(null);
+//    Inventory inventory = inventoryRepository.findByCharacters_Id(character_id).orElse(null);
+    Inventory inventory = inventoryRepository.findByCharacters(character).orElse(null);
     Long inventory_id = inventory.getId();
 
     System.out.println(character_id);

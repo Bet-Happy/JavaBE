@@ -68,7 +68,7 @@ public class InventoryController {
         Resource resourceToGet = resourcesRepository.findByName(resource);
         System.out.println(character);
         System.out.println(resourceToGet);
-        ItemsHandler.createItem(character, resourceToGet);
+        new ItemsHandler().createItem(character, resourceToGet);
         
         return "Response";
     }
