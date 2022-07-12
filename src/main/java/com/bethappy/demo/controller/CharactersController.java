@@ -49,7 +49,13 @@ import org.springframework.http.ResponseEntity;
     Optional<Characters> character = charactersRepository.findById(characterID);
     // If else statements for plan B
     if (keys[1].equals("mining")){
-      character.orElseThrow().setMining(character.orElseThrow().getMining() + Integer.valueOf(values[1].toString()));
+      character.orElseThrow().setMining(Integer.valueOf(values[1].toString()));
+      charactersRepository.save(character.orElseThrow());
+    }
+    if (keys[0].equals("smithing")){
+      characterID = Integer.valueOf(values[1].toString()).longValue();
+      character = charactersRepository.findById(characterID);
+      character.orElseThrow().setSmithing(Integer.valueOf(values[0].toString()));
       charactersRepository.save(character.orElseThrow());
     }
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Experience updated", character);
