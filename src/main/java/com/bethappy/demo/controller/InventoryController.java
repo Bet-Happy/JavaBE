@@ -14,10 +14,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -31,7 +28,7 @@ public class InventoryController {
 
     @Autowired
     ResourcesRepository resourcesRepository;
-
+    @CrossOrigin
     @GetMapping("/inventory")
     public ResponseEntity<Object> getCharacterInventory(){
         List<Inventory> inventoryList = (List<Inventory>) inventoryRepository.findAll();
