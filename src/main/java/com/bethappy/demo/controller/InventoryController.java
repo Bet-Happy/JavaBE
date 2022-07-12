@@ -37,6 +37,9 @@ public class InventoryController {
     @Autowired
     ResourcesRepository resourcesRepository;
 
+    @Autowired
+    ItemsHandler itemsHandler;
+
     @GetMapping("/inventory")
     public ResponseEntity<Object> getCharacterInventory(){
         List<Inventory> inventoryList = (List<Inventory>) inventoryRepository.findAll();
@@ -69,14 +72,17 @@ public class InventoryController {
         Long char_id = Long.parseLong((String) information.get("characters"));
         Characters character = charactersRepository.findById(char_id).orElse(null);
         Resource resourceToGet = resourcesRepository.findByName(resource);
-        List<Inventory> itemList = inventoryRepository.findAllByCharacters(character);
-        for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i).getId());
-            System.out.println(itemList.get(i).getCharacters());
-            System.out.println(itemList.get(i).getClass());
+        try {
+            itemsHandler.createItem(character, resourceToGet);
+        } catch (IllegalStateException e) {
+            return "Error";
         }
-        System.out.println("////////\n"+"////////\n"+"////////THISISTHEINVENTORY\n");
-        System.out.println(resourceToGet);
+        //if resource doesnt exists
+        // if (inventoryRepository.findAllByCharacters(character.contains()))
+        // Inventory item = new Inventory(character, resourceToGet, 1);
+        // inventoryRepository.save(item);
+        //if resource already exists
+        //Inventory item2 = inventoryRepository.findResourceByCharacters(character, resourceToGet).orElse(null);
         //ItemsHandler.createItem(character, resourceToGet);
         
         return "Response";
