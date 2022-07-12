@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class InventoryController {
@@ -38,10 +35,16 @@ public class InventoryController {
     @GetMapping("/inventory")
     public ResponseEntity<Object> getCharacterInventory(){
         List<Inventory> inventoryList = (List<Inventory>) inventoryRepository.findAll();
-
-//        Map<String,Object> inv = new HashMap<>();
-//        inventoryList.forEach((inventory) -> inv.put(inventoryList.,value));
-        return ResponseHandler.generateResponse(HttpStatus.OK,true,"InventoryList retrieved",inventoryList);
+        ArrayList<Object> newInventoryList = new ArrayList<>();
+        for (Inventory inventory : inventoryList) {
+            Map<String,Object> invMap = new HashMap<>();
+            invMap.put("id",inventory.getId());
+            invMap.put("character",inventory.getCharacters().getId());
+            invMap.put("resource",inventory.getResource().getName());
+            invMap.put("amount",inventory.getAmount());
+            newInventoryList.add(invMap);
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK,true,"InventoryList retrieved",newInventoryList);
     }
 
     @PostMapping("/inventory")
