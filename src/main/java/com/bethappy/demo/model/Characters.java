@@ -1,5 +1,6 @@
 package com.bethappy.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import javax.persistence.*;
 
@@ -19,15 +20,22 @@ public class Characters {
 
   private Integer mining = 0;
 
-  @OneToMany(mappedBy="characters")
-  private Set<Inventory> inventoryList;
+  //****one character can have many items(named as inventory)
+  @OneToMany(mappedBy = "characters")
+  //****this prevents all the nested display of Json body that includes Set<Inventory> displaying character which contains Set<Inventory>
+  @JsonManagedReference("characters_inventories")
+  private Set<Inventory> inventories;
 
   public Characters(){
     // you set the default value here as well...
     this.mining = 0;
   }
-
   public Characters(String name){
+    this.name = name;
+    this.mining = 0;
+  }
+  public Characters(Long id, String name){
+    this.id = id;
     this.name = name;
     this.mining = 0;
   }
