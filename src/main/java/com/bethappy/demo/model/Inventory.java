@@ -17,9 +17,13 @@ public class Inventory {
     @Column(name="id")
     private Long id;
 
+    
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "characters_id",nullable = false)
     private Characters characters;
+    
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn()
 
     @Column(name="slot_number")
     private Integer slot_number;
@@ -27,6 +31,11 @@ public class Inventory {
     @Column(name="amount")
     private Integer amount;
 
+    // public Inventory(Integer characters_id, Integer slot_number, Integer amount) {
+    //     this.characters_id = characters_id;
+    //     this.slot_number = slot_number;
+    //     this.amount = amount;
+    // }
     public Inventory(Characters characters,Integer slot_number, Integer amount){
         this.characters = characters;
         this.slot_number= slot_number;

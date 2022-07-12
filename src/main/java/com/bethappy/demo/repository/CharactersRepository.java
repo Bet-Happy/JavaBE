@@ -11,4 +11,5 @@ public interface CharactersRepository extends CrudRepository<Characters, Long>{
     @Override
     List<Characters> findAll();
     Optional<Characters> findById(Long id);
+    //After Users table is added create a function that bring back a character with user id
 }
