@@ -26,19 +26,15 @@ public class Inventory {
     @JsonBackReference("resource_inventories")
     private Resource resource;
 
-    @Column(name="slot_number")
-    private Integer slot_number;
-
     @Column(name="amount")
     private Integer amount;
 
     public Inventory() {
     }
 
-    public Inventory(Characters characters, Resource resource, Integer slot_number, Integer amount){
+    public Inventory(Characters characters, Resource resource, Integer amount){
         this.characters= characters;
         this.resource = resource;
-        this.slot_number= slot_number;
         this.amount= amount;
     }
 

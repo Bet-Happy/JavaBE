@@ -31,9 +31,14 @@ public class Resource {
     this.xp = xp;
     this.tpa = tpa;
   }
+  public Resource(Long id, String name, Integer xp, Integer tpa) {
+    this.id = id;
+    this.name = name;
+    this.xp = xp;
+    this.tpa = tpa;
+  }
 
   public Resource(Long id, String name, Integer xp, Integer tpa, Set<Inventory> inventories) {
-    System.out.println("resource constructor made here");
     this.id = id;
     this.inventories = inventories;
     this.name = name;
