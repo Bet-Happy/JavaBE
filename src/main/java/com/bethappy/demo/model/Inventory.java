@@ -21,7 +21,7 @@ public class Inventory {
     @JsonBackReference("characters_inventories")
     private Characters characters;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "resource_id",nullable = false)
     @JsonBackReference("resource_inventories")
     private Resource resource;

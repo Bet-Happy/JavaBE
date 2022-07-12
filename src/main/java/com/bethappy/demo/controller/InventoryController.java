@@ -64,11 +64,20 @@ public class InventoryController {
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
     @PostMapping("/crafting/{resource}")
-    public String craftItem(@RequestBody Characters character, @PathVariable String resource){
+    public String craftItem(@RequestBody JSONObject information, @PathVariable String resource){
+    //public String craftItem(@RequestBody Characters character, @PathVariable String resource){
+        Long char_id = Long.parseLong((String) information.get("characters"));
+        Characters character = charactersRepository.findById(char_id).orElse(null);
         Resource resourceToGet = resourcesRepository.findByName(resource);
-        System.out.println(character);
+        List<Inventory> itemList = inventoryRepository.findAllByCharacters(character);
+        for (int i = 0; i < itemList.size(); i++){
+            System.out.println(itemList.get(i).getId());
+            System.out.println(itemList.get(i).getCharacters());
+            System.out.println(itemList.get(i).getClass());
+        }
+        System.out.println("////////\n"+"////////\n"+"////////THISISTHEINVENTORY\n");
         System.out.println(resourceToGet);
-        new ItemsHandler().createItem(character, resourceToGet);
+        //ItemsHandler.createItem(character, resourceToGet);
         
         return "Response";
     }
