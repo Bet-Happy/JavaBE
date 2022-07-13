@@ -19,16 +19,12 @@ public class ResourcesController{
   @GetMapping("/resources")
   public ResponseEntity<Object> main(){
     Iterable<Resource> resources = resourcesRepository.findAll();
-    
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Got all resources", resources);
   }
-
-  //localhot:8080/resources/Copper
 
   @GetMapping("/resources/{resource}")
   public ResponseEntity<Object> getSingleResourceByName(@PathVariable String resource){
     Resource resourceToGet = resourcesRepository.findByName(resource);
-
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Got the resource", resourceToGet);
   }
 

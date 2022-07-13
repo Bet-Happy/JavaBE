@@ -13,7 +13,9 @@ import java.util.Set;
 public class Resource {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long id;
+
   //****one resource type can belong to many inventories(named as inventory)
   @OneToMany(mappedBy = "resource")
   @JsonManagedReference("resource_inventories")
@@ -23,7 +25,6 @@ public class Resource {
   private Integer tpa;
 
   public Resource() {
-
   }
 
   public Resource(String name, Integer xp, Integer tpa) {
