@@ -8,9 +8,6 @@ import com.bethappy.demo.repository.InventoryRepository;
 import com.bethappy.demo.repository.ResourcesRepository;
 import com.bethappy.demo.service.ItemsHandler;
 import com.bethappy.demo.service.ResponseHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 public class InventoryController {
+    
     @Autowired
     InventoryRepository inventoryRepository;
 
@@ -43,9 +38,6 @@ public class InventoryController {
     @GetMapping("/inventory")
     public ResponseEntity<Object> getCharacterInventory(){
         List<Inventory> inventoryList = (List<Inventory>) inventoryRepository.findAll();
-
-//        Map<String,Object> inv = new HashMap<>();
-//        inventoryList.forEach((inventory) -> inv.put(inventoryList.,value));
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"InventoryList retrieved",inventoryList);
     }
 
@@ -66,6 +58,7 @@ public class InventoryController {
         Inventory item = inventoryRepository.save(newInventory);
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
+
     @PostMapping("/crafting/{resource}")
     public ResponseEntity<Object> craftItem(@RequestBody JSONObject information, @PathVariable String resource){
         Long char_id = Long.parseLong((String) information.get("characters"));
@@ -78,23 +71,4 @@ public class InventoryController {
         }
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character", character);
     }
-//    @PostMapping("/inventory")
-//    public ResponseEntity<Object> addCharacterItem(@RequestBody JSONObject item){
-//        // insert a function here from itemcreation
-//        // this could return an inventory
-//        Long charId = (Long) item.get("characters");
-//        Optional<Characters> character = charactersRepository.findById(charId);
-//        if(!character.isPresent()){
-//            return ResponseHandler.generateResponse(HttpStatus.FORBIDDEN,false,"Character not found.",character);
-//        }
-//        Long resId = (Long) item.get("resource");
-//        Optional<Resource> resource = resourcesRepository.findById(resId);
-//        if(!resource.isPresent()){
-//            return ResponseHandler.generateResponse(HttpStatus.FORBIDDEN,false,"Resource not found.",resource);
-//        }
-//        ItemsHandler.createItem(character, resId);
-//
-//        return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the inventory",c);
-//    }
-
 }

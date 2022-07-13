@@ -18,16 +18,6 @@ public class ItemsHandler {
   public Object createItem(Characters character, Resource resource){
     List<Inventory> inventory = inventoryRepository.findAllByCharacters(character);
 
-    /*boolean isPresent = false;
-    Inventory existing = null;
-    for (int i = 0; i < inventory.size(); i++) {
-        Inventory item = inventory.get(i);
-        if (item.getResource().getName().equals(resource.getName())) {
-            isPresent = true;
-            existing = item;
-        }
-    }*/
-
     switch (resource.getName()) {
       case "Bronze":
         spendMaterial(character, 1, 1);
@@ -50,7 +40,6 @@ public class ItemsHandler {
       Inventory item = new Inventory(character, resource, 1);
       inventoryRepository.save(item);
     }
-
     return "Hello";
   }
 
@@ -59,7 +48,7 @@ public class ItemsHandler {
 
     int currentCount = 0;
     for (int i = 0; i < inventory.size(); ++i) {
-      if (inventory.get(i).getResource().getId().equals(resourceId)) {
+      if (inventory.get(i).getResource().getId().equals(resourceId) && inventory.get(i).getAmount() > 0) {
         currentCount++;
       }
     }
