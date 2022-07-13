@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 @Data
@@ -26,8 +27,8 @@ public class User {
   private String password;
   private Boolean enabled;
   
-  @OneToOne
-  @JoinColumn(name = "characters_id")
+  @OneToOne(mappedBy="user")
+  @JsonManagedReference
   private Characters character;
 
   public User() {

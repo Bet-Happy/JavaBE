@@ -4,6 +4,5 @@ CREATE TABLE users (
   id bigserial PRIMARY KEY,
   username varchar(50) NOT NULL UNIQUE,
   password varchar(60) NOT NULL,
-  enabled BOOLEAN NOT NULL,
-  characters_id INTEGER references characters(id)
+  enabled BOOLEAN NOT NULL
  );

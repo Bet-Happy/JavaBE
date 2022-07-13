@@ -1,17 +1,9 @@
 package com.bethappy.demo.model;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.GenerationType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -25,7 +17,9 @@ public class Characters {
   private Integer mining;
   
 
-  @OneToOne(mappedBy="characters")
+  @OneToOne
+  @JsonBackReference
+  @JoinColumn(name = "users_id")
   private User user;
 
 
