@@ -24,8 +24,8 @@ public class Characters {
   private String name;
   private Integer mining;
   
-  @OneToOne
-  @JoinColumn(name = "characters_id")
+
+  @OneToOne(mappedBy="characters")
   private User user;
 
 

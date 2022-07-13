@@ -1,6 +1,5 @@
 package com.bethappy.demo;
 
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
-
-public class SecurityCofiguration extends WebSecurityConfigurerAdapter{
-
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   DataSource dataSource;
 
@@ -26,30 +23,30 @@ public class SecurityCofiguration extends WebSecurityConfigurerAdapter{
     auth.jdbcAuthentication()
     .dataSource(dataSource).passwordEncoder(getPasswordEncoder());
   }
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception{
-    http
-        .authorizeHttpRequests()
-        .antMatchers("/login").permitAll()
-        .antMatchers("/users/new").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login")
-            .and()
-            .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/login?logout")
-            .invalidateHttpSession(true)
-            .and()
-            .exceptionHandling()
-            .accessDeniedPage("/403");
-
-  }
-  
   @Bean
   public BCryptPasswordEncoder getPasswordEncoder() {
       return new BCryptPasswordEncoder();
   }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception{
+    http
+        .cors().and().csrf().disable()
+        .authorizeRequests()
+        .antMatchers("/users/new").permitAll()
+        .antMatchers("/users").permitAll()
+        .antMatchers("/character").permitAll();
+            // .anyRequest().authenticated()
+            // .and()
+            // .formLogin()
+            // .loginPage("/login")
+            // .and()
+            // .logout()
+            // .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            // .logoutSuccessUrl("/login?logout")
+            // .invalidateHttpSession(true)
+            // .and()
+            // .exceptionHandling()
+            // .accessDeniedPage("/403");
+  }    
 }
