@@ -6,6 +6,7 @@ import com.bethappy.demo.model.Resource;
 import com.bethappy.demo.repository.CharactersRepository;
 import com.bethappy.demo.repository.InventoryRepository;
 import com.bethappy.demo.repository.ResourcesRepository;
+import com.bethappy.demo.service.ItemsHandler;
 import com.bethappy.demo.service.ResponseHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,6 +22,11 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -76,13 +82,30 @@ public class InventoryController {
         Inventory item = inventoryRepository.save(newInventory);
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
+    @PostMapping("/crafting/{resource}")
+    public String craftItem(@RequestBody JSONObject information, @PathVariable String resource){
+    //public String craftItem(@RequestBody Characters character, @PathVariable String resource){
+        Long char_id = Long.parseLong((String) information.get("characters"));
+        Characters character = charactersRepository.findById(char_id).orElse(null);
+        Resource resourceToGet = resourcesRepository.findByName(resource);
+        List<Inventory> itemList = inventoryRepository.findAllByCharacters(character);
+        for (int i = 0; i < itemList.size(); i++){
+            System.out.println(itemList.get(i).getId());
+            System.out.println(itemList.get(i).getCharacters());
+            System.out.println(itemList.get(i).getClass());
+        }
+        System.out.println("////////\n"+"////////\n"+"////////THISISTHEINVENTORY\n");
+        System.out.println(resourceToGet);
+        //ItemsHandler.createItem(character, resourceToGet);
+        
+        return "Response";
+    }
 
     @PatchMapping(path = "/inventory", consumes = "application/json")
     public ResponseEntity<Object> patchCharacterItem(@RequestBody JSONObject bodyJson){
 //        {
 //            "resource":"1",
 //            "amount":"2"
-//        }
         Long charId = Long.parseLong("1");
         Long resId = Long.parseLong(bodyJson.getAsString("resource"));
         String amount = bodyJson.getAsString("amount");
@@ -124,4 +147,5 @@ public class InventoryController {
         JsonNode patched = patch.apply(objectMapper.convertValue(targetInventory, JsonNode.class));
         return objectMapper.treeToValue(patched, Inventory.class);
     }
+
 }

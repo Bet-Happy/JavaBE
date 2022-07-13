@@ -35,28 +35,15 @@ public class CharactersControllerTest {
 
     @LocalServerPort
     int randomServerPort;
+
     @Before
-    public void setup() {
+    public void setup() throws URISyntaxException {
         restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-    }
-
-    @BeforeAll
-    public void addCharacter() {
-        // Integrate this later on
-    }
-
-    @Test
-    public void testCreateCharacter() throws Exception{
         URI uri = new URI("http://localhost:"+randomServerPort+"/characters");
-        ResponseEntity<String> post = restTemplate.postForEntity(uri, testCharacter, String.class);
-        assertThat(post.getBody().contains("\"id\":1"));
-        assertThat(post.getBody().contains("\"name\":\"TestCharacter\""));
-        assertThat(post.getBody().contains("\"mining\":0"));
-        System.out.println(post.getBody());
-        assertThat(Long.valueOf(1)).isEqualTo(charactersRepository.findAll().get(0).getId());
-        assertThat("TestCharacter").isEqualTo(charactersRepository.findAll().get(0).getName());
-        assertThat((Integer)0).isEqualTo(charactersRepository.findAll().get(0).getMining());
-    }
+        if (charactersRepository.count() == 0){
+          ResponseEntity<String> post = restTemplate.postForEntity(uri, testCharacter, String.class);
+        }
+      }
 
     @Test
     public void testGetCharactersDetails() throws URISyntaxException {
@@ -71,7 +58,7 @@ public class CharactersControllerTest {
     }
     //@Ignore
     @Test
-    public void testUpdateExperience() throws URISyntaxException {
+    public void testUpdateMiningExperience() throws URISyntaxException {
         charactersRepository.save(testCharacter);
         URI uri = new URI("http://localhost:"+randomServerPort+"/characters/updateExperience");
         HttpHeaders reqHeaders = new HttpHeaders();
@@ -85,5 +72,23 @@ public class CharactersControllerTest {
         assertThat(response.getBody().toString()).contains("\"id\":1");
         assertThat(response.getBody().toString()).contains("\"name\":\"TestCharacter\"");
         assertThat(response.getBody().toString()).contains("\"mining\":100");
+    }
+
+    @Test
+    public void testUpdateSmithingExperience() throws URISyntaxException {
+        //charactersRepository.save(testCharacter);
+        URI uri = new URI("http://localhost:"+randomServerPort+"/characters/updateExperience");
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setContentType(MediaType.APPLICATION_JSON);
+        // If it is set to mining instead of smithing in the requestEntity, it works. With smithing it does not
+        HttpEntity<String> requestEntity = new HttpEntity<String>("{\"id\":1,\"smithing\":100}", reqHeaders);
+        ResponseEntity<String> post = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
+        assertThat(post.getBody().toString()).contains("\"id\":1");
+        assertThat(post.getBody().toString()).contains("\"smithing\":100");
+        uri = new URI ("http://localhost:"+randomServerPort+"/characters");
+        ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
+        assertThat(response.getBody().toString()).contains("\"id\":1");
+        assertThat(response.getBody().toString()).contains("\"name\":\"TestCharacter\"");
+        assertThat(response.getBody().toString()).contains("\"smithing\":100");
     }
 }
