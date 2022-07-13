@@ -67,25 +67,16 @@ public class InventoryController {
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
     @PostMapping("/crafting/{resource}")
-    public String craftItem(@RequestBody JSONObject information, @PathVariable String resource){
-    //public String craftItem(@RequestBody Characters character, @PathVariable String resource){
+    public ResponseEntity<Object> craftItem(@RequestBody JSONObject information, @PathVariable String resource){
         Long char_id = Long.parseLong((String) information.get("characters"));
         Characters character = charactersRepository.findById(char_id).orElse(null);
         Resource resourceToGet = resourcesRepository.findByName(resource);
         try {
             itemsHandler.createItem(character, resourceToGet);
         } catch (IllegalStateException e) {
-            return "Error";
+            return ResponseHandler.generateResponse(HttpStatus.OK,true,"Could not add item to the character", character);
         }
-        //if resource doesnt exists
-        // if (inventoryRepository.findAllByCharacters(character.contains()))
-        // Inventory item = new Inventory(character, resourceToGet, 1);
-        // inventoryRepository.save(item);
-        //if resource already exists
-        //Inventory item2 = inventoryRepository.findResourceByCharacters(character, resourceToGet).orElse(null);
-        //ItemsHandler.createItem(character, resourceToGet);
-        
-        return "Response";
+        return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character", character);
     }
 //    @PostMapping("/inventory")
 //    public ResponseEntity<Object> addCharacterItem(@RequestBody JSONObject item){
