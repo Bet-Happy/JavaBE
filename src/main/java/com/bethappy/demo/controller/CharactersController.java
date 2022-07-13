@@ -37,7 +37,7 @@ import org.springframework.http.ResponseEntity;
     charactersRepository.save(character);
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Character was created", character);
   }
-
+     @CrossOrigin
   @PostMapping("/characters/updateExperience")
   public ResponseEntity<?> updateExperience(@RequestBody JSONObject skillExperience){
     Object[] keys = skillExperience.keySet().toArray();

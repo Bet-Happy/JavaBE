@@ -102,23 +102,27 @@ public class InventoryController {
         }
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character", character);
     }
-
+    @CrossOrigin
     @PatchMapping(path = "/inventory", consumes = "application/json")
     public ResponseEntity<Object> patchCharacterItem(@RequestBody JSONObject bodyJson){
 //        {
 //            "resource":"1",
-//            "amount":"2"
+//            "amount":"2" add to the previous amount
         Long charId = Long.parseLong("1");
         Long resId = Long.parseLong(bodyJson.getAsString("resource"));
-        String amount = bodyJson.getAsString("amount");
-        String patchJson = "[{ \"op\": \"replace\", \"path\": \"/amount\", \"value\": \""+amount+"\" }]";
-        System.out.println(patchJson);
+        Integer addAmount = Integer.valueOf(bodyJson.getAsString("amount"));
+
         try {
             List<Inventory> inventories = (List<Inventory>) inventoryRepository.findAll();
             Inventory oldInventory = inventories
                     .stream()
                     .filter((inventory)->inventory.getCharacters().getId().equals(charId) && inventory.getResource().getId().equals(resId))
                     .findFirst().orElseThrow(ChangeSetPersister.NotFoundException::new);
+
+            Integer totalAmount = addAmount + (int)(oldInventory.getAmount());
+
+            String patchJson = "[{ \"op\": \"replace\", \"path\": \"/amount\", \"value\": \""+totalAmount+"\" }]";
+            System.out.println(patchJson);
 
             Inventory inventoryPatched = applyPatchToInventory(patchJson, oldInventory);
 
