@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.Optional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class InventoryController {
+    
     @Autowired
     InventoryRepository inventoryRepository;
 
@@ -44,6 +47,10 @@ public class InventoryController {
 
     @Autowired
     ResourcesRepository resourcesRepository;
+
+    @Autowired
+    ItemsHandler itemsHandler;
+
     @CrossOrigin
     @GetMapping("/inventory")
     public ResponseEntity<Object> getCharacterInventory(){
@@ -82,23 +89,18 @@ public class InventoryController {
         Inventory item = inventoryRepository.save(newInventory);
         return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character",item);
     }
+
     @PostMapping("/crafting/{resource}")
-    public String craftItem(@RequestBody JSONObject information, @PathVariable String resource){
-    //public String craftItem(@RequestBody Characters character, @PathVariable String resource){
+    public ResponseEntity<Object> craftItem(@RequestBody JSONObject information, @PathVariable String resource){
         Long char_id = Long.parseLong((String) information.get("characters"));
         Characters character = charactersRepository.findById(char_id).orElse(null);
         Resource resourceToGet = resourcesRepository.findByName(resource);
-        List<Inventory> itemList = inventoryRepository.findAllByCharacters(character);
-        for (int i = 0; i < itemList.size(); i++){
-            System.out.println(itemList.get(i).getId());
-            System.out.println(itemList.get(i).getCharacters());
-            System.out.println(itemList.get(i).getClass());
+        try {
+            itemsHandler.createItem(character, resourceToGet);
+        } catch (IllegalStateException e) {
+            return ResponseHandler.generateResponse(HttpStatus.OK,true,"Could not add item to the character", character);
         }
-        System.out.println("////////\n"+"////////\n"+"////////THISISTHEINVENTORY\n");
-        System.out.println(resourceToGet);
-        //ItemsHandler.createItem(character, resourceToGet);
-        
-        return "Response";
+        return ResponseHandler.generateResponse(HttpStatus.OK,true,"Item added to the character", character);
     }
 
     @PatchMapping(path = "/inventory", consumes = "application/json")
