@@ -1,9 +1,15 @@
 package com.bethappy.demo.controller;
 
 import com.bethappy.demo.model.Characters;
+import com.bethappy.demo.model.Inventory;
+import com.bethappy.demo.model.Resource;
 import com.bethappy.demo.repository.CharactersRepository;
 import java.util.List;
 import java.util.Optional;
+
+import com.bethappy.demo.repository.InventoryRepository;
+import com.bethappy.demo.repository.ResourcesRepository;
+import com.bethappy.demo.service.InitCharInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,8 @@ import org.springframework.http.ResponseEntity;
 
    @Autowired
    CharactersRepository charactersRepository;
+   @Autowired
+   InitCharInventory initCharInventory;
 
    @CrossOrigin
    @GetMapping("/characters")
@@ -35,6 +43,9 @@ import org.springframework.http.ResponseEntity;
   @PostMapping("/characters")
   public ResponseEntity<?> characterCreation(@RequestBody Characters character){
     charactersRepository.save(character);
+    for (int i=1 ; i < 5 ; i++){
+        initCharInventory.initResources(character, (long) i);
+    }
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Character was created", character);
   }
      @CrossOrigin
