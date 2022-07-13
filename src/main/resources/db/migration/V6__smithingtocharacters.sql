@@ -1,0 +1,1 @@
+ALTER TABLE characters ADD smithing int NOT NULL DEFAULT 0;
