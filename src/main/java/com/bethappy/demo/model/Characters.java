@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.GenerationType;
 import lombok.Data;
 
@@ -25,7 +28,9 @@ public class Characters {
   private Integer mining;
   
 
-  @OneToOne(mappedBy="characters")
+  @OneToOne
+  @JsonBackReference
+  @JoinColumn(name = "users_id")
   private User user;
 
 

@@ -61,7 +61,9 @@ public class CharactersControllerTest {
   public void TestGetCharactersDetails() throws URISyntaxException {
     charactersRepository.save(testCharacter);
     URI uri = new URI("http://localhost:"+randomServerPort+"/character");
+    System.out.println(charactersRepository.findAll().get(0).getId()+"NAME:"+charactersRepository.findAll().get(0).getName());
     ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
+
     assertThat(response.getBody().toString()).contains("\"id\":1");
     assertThat(response.getBody().toString()).contains("\"name\":\"TestCharacter\"");
     assertThat(response.getBody().toString()).contains("\"mining\":0");
