@@ -60,7 +60,7 @@ public class InventoryController {
             Map<String,Object> invMap = new HashMap<>();
             invMap.put("id",inventory.getId());
             invMap.put("character",inventory.getCharacters().getId());
-            invMap.put("resource",inventory.getResource().getName());
+            invMap.put("resource",inventory.getResource().getId());
             invMap.put("amount",inventory.getAmount());
             newInventoryList.add(invMap);
         }
