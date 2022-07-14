@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,29 +38,8 @@ public class UserController {
   @Autowired
   UserRepository userRepository;
 
-  // public ResponseEntity<?> characterReturn(){
-  //   try {
-  //     Characters character = characterRepository.findAll().get(0);
-  //     return ResponseHandler.generateResponse(HttpStatus.OK, true, "The character is returned", character);
-  //   } catch(Exception e) {
-  //     return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "No characters was found.", e);
-  //   }
-  // }
-  // @GetMapping("/users/new")
-  // // public ResponseEntity<Object> signup(@RequestBody User user){
-  //   public String signup() {
-  //   return "Demi";
-    //try { 
-    //  if (userRepository.existsByUsername(user.getUsername()) == false){
-    //     userRepository.save(user);
-    //     return ResponseHandler.generateResponse(HttpStatus.OK, true, "User created successfully.", user);
-    //   //}
-    //   return ResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false, "Username already exists:", user.getUsername());
-    // } //catch (IllegalStateException e){
-    //   return ResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false, "A problem occured.", "sis");
-    // }
   
-  @PostMapping("/users")
+  @PostMapping("/users/registration")
   public ResponseEntity<Object> signup(@RequestBody JSONObject user){
     String username = user.get("username").toString();
     String password = user.get("password").toString();
@@ -68,23 +48,13 @@ public class UserController {
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Created a user", user);
   }
 
-  @GetMapping("/users/new")
-    public ResponseEntity<Object> signup(){
+  @GetMapping("/users/{id}")
+    public ResponseEntity<Object> signup(@PathVariable Long id){
       // User user = userRepository.findAll().get(1);
       User user = userRepository.findById(Long.valueOf(1)).orElse(null);
       return ResponseHandler.generateResponse(HttpStatus.OK, true, "Create a user", user);
     }
 
-  
-  // public ResponseEntity<Object> signup(@RequestBody User user){
-  //   if (userRepository.existsByUsername(user.getUsername())) {
-  //     return ;
-  //   }
-  //   else {
-  //     userRepository.save(user);
-  //     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Create a user", user);
-  //   }
-  // }
 }
   
   

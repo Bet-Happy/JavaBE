@@ -42,4 +42,3 @@ import java.util.Optional;
     return ResponseHandler.generateResponse(HttpStatus.OK, true, "Character was created", character);
   }
 }
-
